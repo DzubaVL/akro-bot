@@ -1,5 +1,6 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters
+import os  # Новый импорт
 
 # Словарь для хранения данных
 payments = {}
@@ -57,9 +58,8 @@ async def handle_photo(update: Update, context):
     else:
         await update.message.reply_text("Сначала укажите сумму и имя ребенка.")
 
-
 # Запуск бота
-app = ApplicationBuilder().token("7546189126:AAGSbR0xDQuGhgwo5mOuDs33zEULQqn5VQE").build()
+app = ApplicationBuilder().token(os.getenv("BOT_TOKEN")).build()  # Загружаем токен из переменной окружения
 app.add_handler(CommandHandler("start", start))
 app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
 app.add_handler(MessageHandler(filters.PHOTO, handle_photo))
